@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.form4.alfresco</groupId>
+	<artifactId>manualsynctrigger-share</artifactId>
+	<version>1.0.0</version>
+	<name>Trigger Sync Button - Share extension</name>
+	<packaging>amp</packaging>
+	<description>Trigger Sync Button: Trigger LDAP/AD sync manually on the site members page</description>
+	<inceptionYear>2015</inceptionYear>
+	<organization>
+		<name>form4 GmbH &amp; Co. KG</name>
+		<url>http://www.form4.de</url>
+	</organization>
+
+	<parent>
+		<groupId>org.alfresco.maven</groupId>
+		<artifactId>alfresco-sdk-parent</artifactId>
+		<version>2.1.1</version>
+	</parent>
+
+	<!-- SDK properties have sensible defaults in the SDK parent, but you can 
+		override the properties below to use another version. For more available 
+		properties see the alfresco-sdk-parent POM. -->
+	<properties>
+		<!-- The following are default values for data location and Alfresco version. 
+			Uncomment if you need to change <alfresco.version>${alfresco.community.default.version}</alfresco.version> -->
+
+		<!-- This control the root logging level for all apps uncomment and change, 
+			defaults to WARN <app.log.root.level>WARN</app.log.root.level> -->
+
+		<!-- Set the enviroment to use, this controls which properties will be 
+			picked in src/test/properties for embedded run, defaults to the 'local' environment. 
+			See SDK Parent POM for more info. <env>other environment name</env> -->
+
+		<!-- The Maven artifact ID to use when loading the Share.WAR that the AMP 
+			should be applied to, defaults to the alfresco.war artifact ID, so we need 
+			to override here. -->
+		<app.amp.client.war.artifactId>${alfresco.share.artifactId}</app.amp.client.war.artifactId>
+
+		<!-- Since Alfresco.WAR (i.e. the Repository) is already running on port 
+			8080, we run Share.WAR on port 8081 -->
+		<maven.tomcat.port>8081</maven.tomcat.port>
+
+		<!-- Used in share-config-custom.xml. By default points to local installation 
+			of Alfresco Repo -->
+		<alfresco.repo.url>http://localhost:8080/alfresco</alfresco.repo.url>
+
+		<license.licenceFile>${basedir}/src/main/amp/licenses/manualsynctrigger-LICENSE.txt</license.licenceFile>
+		<license.licenseName>apache_v2</license.licenseName>
+		<license.addSvnKeyWords>false</license.addSvnKeyWords>
+		<license.canUpdateDescription>true</license.canUpdateDescription>
+		<license.canUpdateCopyright>true</license.canUpdateCopyright>
+	</properties>
+
+	<!-- Here we realize the connection with the Alfresco selected platform 
+		(e.g.version and edition) -->
+	<dependencyManagement>
+		<dependencies>
+			<!-- This will import the dependencyManagement for all artifacts in the 
+				selected Alfresco version/edition (see http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies) 
+				NOTE: You still need to define dependencies in your POM, but you can omit 
+				version as it's enforced by this dependencyManagement. NOTE: It defaults 
+				to the latest version this SDK pom has been tested with, but alfresco version 
+				can/should be overridden in your project's pom -->
+			<dependency>
+				<groupId>${alfresco.groupId}</groupId>
+				<artifactId>alfresco-platform-distribution</artifactId>
+				<version>${alfresco.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- Following dependencies are needed for compiling Java code in src/main/java; -->
+	<dependencies>
+		<dependency>
+			<groupId>${alfresco.groupId}</groupId>
+			<artifactId>share</artifactId>
+			<version>${alfresco.version}</version>
+			<classifier>classes</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.extensions.surf</groupId>
+			<artifactId>spring-surf-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- overwrite default alfresco maven sdk setting to use version too -->
+		<finalName>${project.artifactId}-${project.version}</finalName>
+
+		<plugins>
+			<!-- Compress JavaScript files and store as *-min.js -->
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>yuicompressor-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+
+		<!-- http://code.mycila.com/license-maven-plugin/ -->
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.alfresco.maven.plugin</groupId>
+										<artifactId>alfresco-maven-plugin</artifactId>
+										<versionRange>[1.1.1,)</versionRange>
+										<goals>
+											<goal>set-version</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>build-helper-maven-plugin</artifactId>
+										<versionRange>[1.8,)</versionRange>
+										<goals>
+											<goal>add-test-resource</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>1.7</version>
+					<configuration>
+						<verbose>false</verbose>
+						<addSvnKeyWords>false</addSvnKeyWords>
+						<excludes>
+							<exclude>**/*-min.*</exclude>
+							<exclude>**/*.properties</exclude>
+						</excludes>
+						<roots>
+							<root>src/main/java</root>
+							<root>src/main/amp</root>
+							<root>src/test</root>
+						</roots>
+					</configuration>
+					<executions>
+						<execution>
+							<id>first</id>
+							<goals>
+								<goal>update-file-header</goal>
+							</goals>
+							<phase>process-sources</phase>
+							<configuration>
+								<licenseName>apache_v2</licenseName>
+
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+		<!-- Brings in the extra Enterprise specific share classes, if the 'enterprise' 
+			profile has been activated, needs to be activated manually. -->
+		<profile>
+			<id>enterprise</id>
+			<dependencies>
+				<dependency>
+					<groupId>${alfresco.groupId}</groupId>
+					<artifactId>share-enterprise</artifactId>
+					<version>${alfresco.version}</version>
+					<classifier>classes</classifier>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+</project>

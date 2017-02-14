@@ -1,0 +1,36 @@
+<!--
+  #%L
+  Trigger Sync Button - Share extension
+  %%
+  Copyright (C) 2015 form4 GmbH & Co. KG
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+<extension>
+	<modules>
+		<module>
+			<id>form4: Trigger Sync Button</id>
+			<auto-deploy>false</auto-deploy>
+			<version>${project.version}</version>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco.components.invite
+					</targetPackageRoot>
+					<sourcePackageRoot>de.form4.alfresco.customization.components.invite
+					</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+	</modules>
+</extension>
