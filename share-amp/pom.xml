@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.form4.alfresco</groupId>
 	<artifactId>manualsynctrigger-share</artifactId>
@@ -20,31 +19,23 @@
 		<version>2.1.1</version>
 	</parent>
 
-	<!-- SDK properties have sensible defaults in the SDK parent, but you can 
-		override the properties below to use another version. For more available 
-		properties see the alfresco-sdk-parent POM. -->
+	<!-- SDK properties have sensible defaults in the SDK parent, but you can override the properties below to use another version. For more available properties see the alfresco-sdk-parent 
+		POM. -->
 	<properties>
-		<!-- The following are default values for data location and Alfresco version. 
-			Uncomment if you need to change <alfresco.version>${alfresco.community.default.version}</alfresco.version> -->
+		<!-- The following are default values for data location and Alfresco version. Uncomment if you need to change <alfresco.version>${alfresco.community.default.version}</alfresco.version> -->
 
-		<!-- This control the root logging level for all apps uncomment and change, 
-			defaults to WARN <app.log.root.level>WARN</app.log.root.level> -->
+		<!-- This control the root logging level for all apps uncomment and change, defaults to WARN <app.log.root.level>WARN</app.log.root.level> -->
 
-		<!-- Set the enviroment to use, this controls which properties will be 
-			picked in src/test/properties for embedded run, defaults to the 'local' environment. 
-			See SDK Parent POM for more info. <env>other environment name</env> -->
+		<!-- Set the enviroment to use, this controls which properties will be picked in src/test/properties for embedded run, defaults to the 'local' environment. See SDK Parent POM for 
+			more info. <env>other environment name</env> -->
 
-		<!-- The Maven artifact ID to use when loading the Share.WAR that the AMP 
-			should be applied to, defaults to the alfresco.war artifact ID, so we need 
-			to override here. -->
+		<!-- The Maven artifact ID to use when loading the Share.WAR that the AMP should be applied to, defaults to the alfresco.war artifact ID, so we need to override here. -->
 		<app.amp.client.war.artifactId>${alfresco.share.artifactId}</app.amp.client.war.artifactId>
 
-		<!-- Since Alfresco.WAR (i.e. the Repository) is already running on port 
-			8080, we run Share.WAR on port 8081 -->
+		<!-- Since Alfresco.WAR (i.e. the Repository) is already running on port 8080, we run Share.WAR on port 8081 -->
 		<maven.tomcat.port>8081</maven.tomcat.port>
 
-		<!-- Used in share-config-custom.xml. By default points to local installation 
-			of Alfresco Repo -->
+		<!-- Used in share-config-custom.xml. By default points to local installation of Alfresco Repo -->
 		<alfresco.repo.url>http://localhost:8080/alfresco</alfresco.repo.url>
 
 		<license.licenceFile>${basedir}/src/main/amp/licenses/manualsynctrigger-LICENSE.txt</license.licenceFile>
@@ -54,16 +45,24 @@
 		<license.canUpdateCopyright>true</license.canUpdateCopyright>
 	</properties>
 
-	<!-- Here we realize the connection with the Alfresco selected platform 
-		(e.g.version and edition) -->
+	<distributionManagement>
+		<repository>
+			<id>form4-releases</id>
+			<url>https://maven.form4.de/nexus/content/repositories/form4-releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>form4-snapshots</id>
+			<url>https://maven.form4.de/nexus/content/repositories/form4-snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
+	<!-- Here we realize the connection with the Alfresco selected platform (e.g.version and edition) -->
 	<dependencyManagement>
 		<dependencies>
-			<!-- This will import the dependencyManagement for all artifacts in the 
-				selected Alfresco version/edition (see http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies) 
-				NOTE: You still need to define dependencies in your POM, but you can omit 
-				version as it's enforced by this dependencyManagement. NOTE: It defaults 
-				to the latest version this SDK pom has been tested with, but alfresco version 
-				can/should be overridden in your project's pom -->
+			<!-- This will import the dependencyManagement for all artifacts in the selected Alfresco version/edition (see http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies) 
+				NOTE: You still need to define dependencies in your POM, but you can omit version as it's enforced by this dependencyManagement. NOTE: It defaults to the latest version this SDK pom 
+				has been tested with, but alfresco version can/should be overridden in your project's pom -->
 			<dependency>
 				<groupId>${alfresco.groupId}</groupId>
 				<artifactId>alfresco-platform-distribution</artifactId>
@@ -105,8 +104,7 @@
 		<!-- http://code.mycila.com/license-maven-plugin/ -->
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -180,8 +178,7 @@
 	</build>
 
 	<profiles>
-		<!-- Brings in the extra Enterprise specific share classes, if the 'enterprise' 
-			profile has been activated, needs to be activated manually. -->
+		<!-- Brings in the extra Enterprise specific share classes, if the 'enterprise' profile has been activated, needs to be activated manually. -->
 		<profile>
 			<id>enterprise</id>
 			<dependencies>
