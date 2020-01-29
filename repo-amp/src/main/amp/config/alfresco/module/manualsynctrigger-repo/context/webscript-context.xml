@@ -37,26 +37,24 @@
 	limitations under the License.
 -->
 <beans>
+	<bean id="ldapPeopleManualJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="org.alfresco.repo.security.sync.UserRegistrySynchronizerJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="userRegistrySynchronizer">
+					<ref bean="userRegistrySynchronizer" />
+				</entry>
+				<entry key="synchronizeChangesOnly">
+					<value>${synchronization.manualsynctrigger.synchronizeChangesOnly}</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
 	<bean id="webscript.de.form4.alfresco.manualsynctrigger_repo.quartz.triggersync.get" class="de.form4.alfresco.manualsynctrigger_repo.quartz.StartPeopleSyncWebScript" parent="webscript">
 		<property name="siteService" ref="siteService" />
 		<property name="authenticationService" ref="authenticationService" />
 		<property name="authorityService" ref="authorityService" />
-		<property name="jobdetailbean">
-			<bean id="ldapPeopleManualJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
-				<property name="jobClass">
-					<value>org.alfresco.repo.security.sync.UserRegistrySynchronizerJob</value>
-				</property>
-				<property name="jobDataAsMap">
-					<map>
-						<entry key="userRegistrySynchronizer">
-							<ref bean="userRegistrySynchronizer" />
-						</entry>
-						<entry key="synchronizeChangesOnly">
-							<value>${synchronization.manualsynctrigger.synchronizeChangesOnly}</value>
-						</entry>
-					</map>
-				</property>
-			</bean>
-		</property>
+		<property name="jobdetailbean" ref="ldapPeopleManualJobDetail" />
 	</bean>
 </beans>

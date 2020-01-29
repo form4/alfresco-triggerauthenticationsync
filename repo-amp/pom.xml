@@ -35,6 +35,10 @@
 		<license.addSvnKeyWords>false</license.addSvnKeyWords>
 		<license.canUpdateDescription>true</license.canUpdateDescription>
 		<license.canUpdateCopyright>true</license.canUpdateCopyright>
+		
+		<alfresco.version>6.0.7-ga</alfresco.version>
+        <alfresco.repo.version>6.0</alfresco.repo.version>
+		
 	</properties>
 
 	<distributionManagement>
@@ -55,11 +59,12 @@
 			<!-- Setup what versions of the different Alfresco artifacts that will be used (depends on alfresco.version), so we don't have to specify version in any of the dependency definitions 
 				in our POM. For more info see: http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Importing_Dependencies -->
 			<dependency>
-				<groupId>${alfresco.groupId}</groupId>
-				<artifactId>alfresco-platform-distribution</artifactId>
-				<version>${alfresco.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
+				 <groupId>${alfresco.groupId}</groupId>
+                <artifactId>alfresco-content-services-community-distribution</artifactId>
+                <version>${alfresco.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -68,8 +73,10 @@
 		<!-- Following dependencies are needed for compiling Java code in src/main/java; <scope>provided</scope> is inherited for each of the following; for more info, please refer to alfresco-platform-distribution 
 			POM -->
 		<dependency>
-			<groupId>${alfresco.groupId}</groupId>
-			<artifactId>alfresco-repository</artifactId>
+			  <groupId>${alfresco.groupId}</groupId>
+            <artifactId>alfresco-repository</artifactId>
+            <version>${alfresco.repo.version}</version>
+             <scope>provided</scope>
 		</dependency>
 	</dependencies>
 

@@ -9,9 +9,9 @@ package de.form4.alfresco.manualsynctrigger_repo.quartz;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,20 +30,18 @@ import org.alfresco.service.cmr.security.AuthenticationService;
 import org.alfresco.service.cmr.security.AuthorityService;
 import org.alfresco.service.cmr.site.SiteService;
 import org.apache.log4j.Logger;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
-import org.quartz.SimpleTrigger;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.listeners.JobListenerSupport;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.extensions.webscripts.AbstractWebScript;
 import org.springframework.extensions.webscripts.WebScriptRequest;
 import org.springframework.extensions.webscripts.WebScriptResponse;
-import org.springframework.scheduling.quartz.JobDetailBean;
 
 /**
  * Webscript interface to start a quartz jobbean peoplesync manually.
@@ -55,7 +53,7 @@ public class StartPeopleSyncWebScript extends AbstractWebScript implements Appli
 	private final static Logger log = Logger.getLogger(StartPeopleSyncWebScript.class);
 	private final static String PARAM_SITE_ID = "siteId";
 
-	JobDetailBean jobdetailbean;
+	JobDetail jobdetailbean;
 	AuthenticationService authenticationService;
 	AuthorityService authorityService;
 	SiteService siteService;
@@ -73,14 +71,13 @@ public class StartPeopleSyncWebScript extends AbstractWebScript implements Appli
 
 			// Create a trigger that fires exactly once, ten seconds from now
 			final long startTime = System.currentTimeMillis() + 1000L;
-			final SimpleTrigger trigger = new SimpleTrigger("manualTrigger", null, new Date(startTime), null, 0, 0L);
+			Trigger runOnceTrigger = TriggerBuilder.newTrigger().build();
 
 			try {
 				final Scheduler s = schedFact.getScheduler();
-				s.addJobListener(new ManualJobListener());
-				log.debug("trigger: " + trigger + ", scheduler: " + s);
+				log.debug("trigger: " + runOnceTrigger + ", scheduler: " + s);
 
-				s.scheduleJob(jobdetailbean, trigger);
+				s.scheduleJob(jobdetailbean, runOnceTrigger);
 				s.start();
 
 				String msgStart = "LDAP Sync triggered at " + new Date(startTime);
@@ -103,32 +100,8 @@ public class StartPeopleSyncWebScript extends AbstractWebScript implements Appli
 	public void setApplicationContext(final ApplicationContext arg0) throws BeansException {
 	}
 
-	public void setJobdetailbean(JobDetailBean jobdetailbean) {
+	public void setJobdetailbean(JobDetail jobdetailbean) {
 		this.jobdetailbean = jobdetailbean;
-	}
-
-	public class ManualJobListener extends JobListenerSupport {
-
-		@Override
-		public String getName() {
-			return "Manual LDAP People Sync";
-		}
-
-		@Override
-		public void jobExecutionVetoed(final JobExecutionContext arg0) {
-			log.info("jobExecutionVetoed: " + arg0.getJobInstance());
-		}
-
-		@Override
-		public void jobToBeExecuted(final JobExecutionContext arg0) {
-			log.info("jobToBeExecuted: " + arg0.getJobInstance());
-		}
-
-		@Override
-		public void jobWasExecuted(final JobExecutionContext arg0, final JobExecutionException arg1) {
-			log.info("jobWasExecuted: " + arg0.getJobInstance());
-			log.info("exception?", arg1);
-		}
 	}
 
 	public void setAuthenticationService(AuthenticationService authenticationService) {
