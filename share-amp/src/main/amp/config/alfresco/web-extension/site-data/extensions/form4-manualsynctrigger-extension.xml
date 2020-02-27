@@ -21,7 +21,7 @@
 	<modules>
 		<module>
 			<id>form4: Trigger Sync Button</id>
-			<auto-deploy>false</auto-deploy>
+			<auto-deploy>true</auto-deploy>
 			<version>${project.version}</version>
 			<customizations>
 				<customization>
