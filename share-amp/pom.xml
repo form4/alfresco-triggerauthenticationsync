@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.form4.alfresco</groupId>
 	<artifactId>manualsynctrigger-share</artifactId>
-	<version>6.0.0</version>
+	<version>6.0.1</version>
 	<name>Trigger Sync Button - Share extension</name>
 	<packaging>amp</packaging>
 	<description>Trigger Sync Button: Trigger LDAP/AD sync manually on the site members page</description>
